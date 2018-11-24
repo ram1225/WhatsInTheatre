@@ -1,0 +1,7 @@
+{
+  "name": "WhatsInTheatre",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}
