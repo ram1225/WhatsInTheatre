@@ -1,1 +1,29 @@
+app-home {
+    ion-slide>img {
+        max-height: 100%;
+        max-width: 100%;
+    }
 
+    .footer-md:before {
+        height: 1px !important;
+    }
+
+    .titles .item .hydrated {
+        font-weight: bold !important;
+    }
+
+    ion-card-title {
+        font-size: 15px;
+    }
+
+
+
+}
+.custbutton {
+    top: 25% !important;
+    width: 25px !important;
+    height: 44px !important;
+    margin-top: -16px !important;
+    z-index: 6 !important;
+    background-size: 25px 25px !important;
+}

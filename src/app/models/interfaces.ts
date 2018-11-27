@@ -1,4 +1,4 @@
-export interface TrendingMovies {
+export interface ITrendingMovie {
     adult: boolean;
     backdrop_path: string;
     genre_ids: number[];
@@ -13,4 +13,16 @@ export interface TrendingMovies {
     vote_average: number;
     vote_count: number;
     popularity: number;
+}
+
+export class TrendingMovie implements ITrendingMovie {
+
+
+    constructor(public adult, public backdrop_path, public genre_ids,
+        public id, public original_language, public original_title, public overview,
+        public poster_path, public release_date, public title, public video,
+        public vote_average, public vote_count, public popularity) {
+
+    }
+
 }

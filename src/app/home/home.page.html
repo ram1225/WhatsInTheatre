@@ -10,7 +10,37 @@
     <ion-title>Home</ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content padding>
-  <h1>Main Content</h1>
-  <p>Click the icon in the top left to toggle the menu.</p>
+<ion-content>
+  <ion-item class="titles">
+    <ion-label text-left> {{TrendingMoviesTitle}}</ion-label>
+    <ion-select interface="popover" slot="end" placeholder="All" [(ngModel)]="selectedValue" (ionChange)="selectOptionChanged()">
+      <ion-select-option *ngFor="let item of options" [value]="item">{{item}} </ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-slides pager #mySlider [options]="slideOpts" loop="true" (ionSlidesDidLoad)="slidesDidLoad(mySlider)">
+    <ion-slide *ngFor="let movie of TrendingMovies; let index">
+      <ion-card class="card">
+        <ion-img [src]="movie.backdrop_path" (ionImgDidLoad)="ionImgDidLoad(index)" [hidden]="lazyloadFlag[index]"></ion-img>
+        <img src="../../assets/placeholder.png" [hidden]="!lazyloadFlag[index]">
+        <ion-card-header>
+          <ion-card-title text-left text-wrap>{{ movie.original_title }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content text-wrap>
+          <p text-left>{{movie.overview | truncateword }}</p>
+        </ion-card-content>
+
+        <ion-footer class="cardfooter">
+          <ion-item class="activated" detail-push>
+            <ion-label text-right>More Details</ion-label>
+            <ion-icon name="arrow-dropright" slot="end"></ion-icon>
+          </ion-item>
+        </ion-footer>
+        <!-- Navigation -->
+        <div class="swiper-button-next swiper-button-white custbutton"></div>
+        <div class="swiper-button-prev swiper-button-white custbutton"></div>
+      </ion-card>
+    </ion-slide>
+  </ion-slides>
+
+
 </ion-content>
