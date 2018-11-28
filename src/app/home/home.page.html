@@ -12,16 +12,16 @@
 </ion-header>
 <ion-content>
   <ion-item class="titles">
-    <ion-label text-left> {{TrendingMoviesTitle}}</ion-label>
-    <ion-select interface="popover" slot="end" placeholder="All" [(ngModel)]="selectedValue" (ionChange)="selectOptionChanged()">
+    <ion-label text-left> {{TrendingTitle}}</ion-label>
+    <ion-select interface="popover" slot="end" placeholder="All" [(ngModel)]="selectedValue" (ionChange)="getDataWithChosenOption(selectedValue)">
       <ion-select-option *ngFor="let item of options" [value]="item">{{item}} </ion-select-option>
     </ion-select>
   </ion-item>
   <ion-slides pager #mySlider [options]="slideOpts" loop="true" (ionSlidesDidLoad)="slidesDidLoad(mySlider)">
-    <ion-slide *ngFor="let movie of TrendingMovies; let index">
+    <ion-slide *ngFor="let movie of TrendingMovies; let i=index">
       <ion-card class="card">
-        <ion-img [src]="movie.backdrop_path" (ionImgDidLoad)="ionImgDidLoad(index)" [hidden]="lazyloadFlag[index]"></ion-img>
-        <img src="../../assets/placeholder.png" [hidden]="!lazyloadFlag[index]">
+        <ion-img [src]="movie.backdrop_path" (ionImgDidLoad)="ionImgDidLoad(i)" [hidden]="!lazyloadFlag[i]" cache=true></ion-img>
+        <img src="../../assets/placeholder.png" [hidden]="lazyloadFlag[i]"/>
         <ion-card-header>
           <ion-card-title text-left text-wrap>{{ movie.original_title }}</ion-card-title>
         </ion-card-header>

@@ -4,6 +4,8 @@ import { LoadingController, Slides, Slide } from '@ionic/angular';
 import { TrendingMovie } from '../models/interfaces';
 import { NetworkinfoProvider } from '../services/networkinfo/networkinfo';
 import { UtilityService } from '../utils/utility.service';
+import { Events } from '@ionic/angular';
+import { callCordovaPlugin } from '@ionic-native/core/decorators/common';
 
 @Component({
   selector: 'app-home',
@@ -31,44 +33,53 @@ export class HomePage implements OnInit {
   private loading;
   private TrendingMovies: TrendingMovie[];
   private lazyloadFlag = {};
-  private TrendingMoviesTitle = 'TRENDING MOVIES';
+  private TrendingTitle = 'TRENDING';
   private TrendingTV = 'TRENDING TV SHOWS';
   private options = ['All', 'Movie', 'Tv', 'Person'];
   private selectedValue;
 
   constructor(private trendingMovies: TrendingmoviesService, public loadingController: LoadingController,
-    private networkService: NetworkinfoProvider, private utilityService: UtilityService) { }
+    private networkService: NetworkinfoProvider, private utilityService: UtilityService, private events: Events) { }
 
   ngOnInit() {
     // if (!this.networkService.isAppOnline()) {
     //   this.utilityService.presentAlert('Alert','Network is off!', 'Please turn on internet to use the app.',true);
     //  } else {
     this.selectedValue = this.options[0];
-
-    this.presentLoading().then(() => {
-      this.trendingMovies.fetchAndParseTrendingMovies().then(
-        (data) => {
-          data.forEach((ele, index, arr) => {
-            this.lazyloadFlag[index] = false;
-          });
-          this.TrendingMovies = data;
-
-          this.stopLoading();
-        }
-      ).catch(() => {
-        this.stopLoading();
-      });
-    });
+   
+    console.log(this.TrendingTitle);
+    this.getDataWithChosenOption(this.selectedValue);
     //  }
+
   }
 
+  callApi(mediaType: string) {
+    this.trendingMovies.fetchAndParseTrendingMovies(mediaType.toLowerCase()).then(
+      (data) => {
+        data.forEach((ele, index, arr) => {
+          this.lazyloadFlag[index] = false;
+          console.log(index + this.lazyloadFlag[index]);
+        });
+
+        this.TrendingMovies = data;
+
+        this.stopLoading();
+      }
+    ).catch(() => {
+      this.stopLoading();
+    });
+  }
   stopLoading() {
     if (this.loading) {
       this.loading.dismiss();
+      for (let i in this.lazyloadFlag) {
+        this.lazyloadFlag[i] = true;
+      }
+
     }
   }
 
-  ionImgDidLoad(index){
+  ionImgDidLoad(index) {
     this.lazyloadFlag[index] = true;
   }
 
@@ -84,8 +95,11 @@ export class HomePage implements OnInit {
     // slides.startAutoplay();
   }
 
-  selectOptionChanged() {
-    console.log(this.selectedValue);
+  getDataWithChosenOption(option) {
+    this.presentLoading().then(() => {
+      this.callApi(option.toLowerCase());
+    });
+    this.TrendingTitle='TRENDING ' + this.selectedValue;
   }
 
 }

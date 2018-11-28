@@ -19,7 +19,7 @@ import { HttpClientModule } from '@angular/common/http';
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule],
   providers: [
     StatusBar,
-    SplashScreen, NetworkinfoProvider,Network,
+    SplashScreen, NetworkinfoProvider,Network, 
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: ErrorHandler, useClass: GlobalErrorHandlerService }
   ],

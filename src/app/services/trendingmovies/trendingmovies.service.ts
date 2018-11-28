@@ -12,14 +12,14 @@ export class TrendingmoviesService {
 
   constructor(private httpService: HttpService) { }
 
-  fetchAndParseTrendingMovies(): Promise<TrendingMovie[]> {
+  fetchAndParseTrendingMovies(mediaType: string): Promise<TrendingMovie[]> {
     return new Promise((resolve, reject) => {
-      this.httpService.get().subscribe(
+      this.httpService.getTrending(mediaType).subscribe(
         (TrendingMoviesData) => {
           resolve(TrendingMoviesData);
         },
         (error) => {
-          Promise.resolve(error);
+          reject(error);
           throw new Error(JSON.stringify(error));
         }
       );
